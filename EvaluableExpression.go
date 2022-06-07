@@ -3,6 +3,7 @@ package govaluate
 import (
 	"errors"
 	"fmt"
+	"sync"
 )
 
 const isoDateFormat string = "2006-01-02T15:04:05.999999999Z0700"
@@ -135,6 +136,15 @@ func (this EvaluableExpression) Evaluate(parameters map[string]interface{}) (int
 	}
 
 	return this.Eval(MapParameters(parameters))
+}
+
+func (this EvaluableExpression) EvaluateX(parameters *sync.Map) (interface{}, error) {
+
+	if parameters == nil {
+		return this.Eval(nil)
+	}
+
+	return this.Eval(MapParametersX{*parameters})
 }
 
 /*

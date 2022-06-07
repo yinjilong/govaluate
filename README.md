@@ -8,6 +8,9 @@ govaluate
 
 Provides support for evaluating arbitrary C-like artithmetic/string expressions.
 
+[MANUAL](MANUAL.md)
+
+
 Why can't you just write these expressions in code?
 --
 

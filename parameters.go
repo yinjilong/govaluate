@@ -2,6 +2,7 @@ package govaluate
 
 import (
 	"errors"
+	"sync"
 )
 
 /*
@@ -29,4 +30,19 @@ func (p MapParameters) Get(name string) (interface{}, error) {
 	}
 
 	return value, nil
+}
+
+type MapParametersX struct {
+	sync.Map
+}
+
+func (p MapParametersX) Get(name string) (interface{}, error) {
+	value, found := p.Load(name)
+	if !found {
+		errorMessage := "No parameter '" + name + "' found."
+		return nil, errors.New(errorMessage)
+	}
+
+	return value, nil
+
 }

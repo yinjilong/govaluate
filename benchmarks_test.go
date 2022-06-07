@@ -1,6 +1,7 @@
 package govaluate
 
 import (
+	"sync"
 	"testing"
 )
 
@@ -127,6 +128,17 @@ func BenchmarkEvaluationParametersModifiers(bench *testing.B) {
 	bench.ResetTimer()
 	for i := 0; i < bench.N; i++ {
 		expression.Evaluate(parameters)
+	}
+}
+
+func BenchmarkEvaluationParamerersFromSyncMap(bench *testing.B) {
+	expression, _ := NewEvaluableExpression("(requests_made * requests_succeeded / 100) >= 90")
+	var param sync.Map
+	param.Store("requests_made", 99.0)
+	param.Store("requests_succeeded", 90.0)
+	bench.ResetTimer()
+	for i := 0; i < bench.N; i++ {
+		expression.EvaluateX(&param)
 	}
 }
 
